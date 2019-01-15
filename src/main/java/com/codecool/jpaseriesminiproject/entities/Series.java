@@ -3,6 +3,7 @@ package com.codecool.jpaseriesminiproject.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -34,6 +35,9 @@ public class Series {
     }
 
     public void addSeason(Season season) {
+        if (seasons == null)
+            seasons = new ArrayList<>();
+
         numOfUploadedSeasons++;
         seasons.add(season);
     }
