@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -26,6 +27,9 @@ public class SeriesRepositoryTest {
 
     @Autowired
     private SeriesRepository seriesRepository;
+
+    @Autowired
+    private TestEntityManager entityManager;
 
     private Series serie;
 
@@ -46,9 +50,13 @@ public class SeriesRepositoryTest {
 
     @Test
     public void addedReviewsSavedWithSerie() {
-        serie.setReviews(Arrays.asList("review1", "review2", "review3"));
+        List<String> reviewsToAdd = Arrays.asList("review1", "review2", "review3");
+        serie.setReviews(reviewsToAdd);
         seriesRepository.save(serie);
-        // TODO
+
+        List<String> DbSerieReviews = seriesRepository.findAll().get(0).getReviews();
+
+        assertEquals(DbSerieReviews.size(), reviewsToAdd.size());
     }
 
     @Test
