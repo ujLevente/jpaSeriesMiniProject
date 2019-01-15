@@ -18,13 +18,16 @@ public class Series {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private Genre genre;
+    @Singular
+    @ElementCollection
+    private List<Genre> genres;
 
     @Transient
     @Setter(AccessLevel.NONE)
     private int numOfUploadedSeasons;
 
-    @ElementCollection
+    @OneToMany
+    @Setter(AccessLevel.NONE)
     private List<Season> seasons;
 
     private String title;

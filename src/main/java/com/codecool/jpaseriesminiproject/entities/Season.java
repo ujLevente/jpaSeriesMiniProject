@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 @Data
@@ -26,6 +23,7 @@ public class Season {
 
     private String title;
 
-    @ElementCollection
+    @OneToMany
     private List<Episode> episodes;
+
 }
