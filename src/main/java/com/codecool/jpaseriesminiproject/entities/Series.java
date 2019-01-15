@@ -18,12 +18,12 @@ public class Series {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Singular
+    private Genre genre;
+
     @ElementCollection
-    private List<Genre> genres;
+    private List<String> reviews;
 
     @Transient
-    @Setter(AccessLevel.NONE)
     private int numOfUploadedSeasons;
 
     @OneToMany
@@ -45,4 +45,9 @@ public class Series {
         seasons.add(season);
     }
 
+    public void addReview(String review) {
+        if (reviews == null)
+            reviews = new ArrayList<>();
+        reviews.add(review);
+    }
 }

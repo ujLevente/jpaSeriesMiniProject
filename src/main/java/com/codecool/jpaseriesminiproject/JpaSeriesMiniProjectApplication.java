@@ -41,11 +41,10 @@ public class JpaSeriesMiniProjectApplication {
         return args -> {
             seriesRepository.save(Series.builder()
                     .title("Game of thrones")
-                    .genre(Genre.ACTION)
-                    .genre(Genre.ADVENTURE)
                     .build());
             seasonRepository.save(Season.builder().seasonNumber(1).build());
             episodeRepository.save(Episode.builder().title("sample ep. name").build());
+
         };
     }
 
