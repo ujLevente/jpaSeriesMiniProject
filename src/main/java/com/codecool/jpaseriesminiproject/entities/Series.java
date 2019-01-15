@@ -21,14 +21,14 @@ public class Series {
     private Genre genre;
 
     @ElementCollection
-    private List<String> reviews;
+    private List<String> reviews = new ArrayList<>();
 
     @Transient
-    private int numOfUploadedSeasons;
+    private int numOfUploadedSeasons = 0;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @Setter(AccessLevel.NONE)
-    private List<Season> seasons;
+    private List<Season> seasons = new ArrayList<>();
 
     private String title;
 
@@ -38,16 +38,11 @@ public class Series {
     }
 
     public void addSeason(Season season) {
-        if (seasons == null)
-            seasons = new ArrayList<>();
-
         numOfUploadedSeasons++;
         seasons.add(season);
     }
 
     public void addReview(String review) {
-        if (reviews == null)
-            reviews = new ArrayList<>();
         reviews.add(review);
     }
 }

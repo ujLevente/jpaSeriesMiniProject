@@ -14,6 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
+import java.util.Arrays;
+
 @SpringBootApplication
 public class JpaSeriesMiniProjectApplication {
 
@@ -39,12 +41,20 @@ public class JpaSeriesMiniProjectApplication {
     public CommandLineRunner init() {
 
         return args -> {
-            seriesRepository.save(Series.builder()
-                    .title("Game of thrones")
-                    .build());
-            seasonRepository.save(Season.builder().seasonNumber(1).build());
             episodeRepository.save(Episode.builder().title("sample ep. name").build());
 
+
+            Season sampleSeason = Season.builder().seasonNumber(1).build();
+            Season sampleSeason1 = Season.builder().seasonNumber(1).build();
+            Season sampleSeason2 = Season.builder().seasonNumber(1).build();
+            seasonRepository.save(sampleSeason);
+
+
+            Series sampleSerie = Series.builder()
+                    .reviews(Arrays.asList("arrsd","sarrd2"))
+                    .title("Game of thrones")
+                    .build();
+            seriesRepository.save(sampleSerie);
         };
     }
 
