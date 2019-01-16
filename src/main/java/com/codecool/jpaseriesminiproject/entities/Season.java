@@ -1,9 +1,6 @@
 package com.codecool.jpaseriesminiproject.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -17,11 +14,15 @@ public class Season {
 
     @Id
     @GeneratedValue
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     private int seasonNumber;
 
     private String title;
+
+    @ManyToOne
+    private Series serie;
 
     @OneToMany
     private List<Episode> episodes;

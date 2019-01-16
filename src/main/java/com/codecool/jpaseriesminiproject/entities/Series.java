@@ -15,6 +15,7 @@ public class Series {
 
     @Id
     @GeneratedValue
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -26,23 +27,32 @@ public class Series {
     @Transient
     private int numOfUploadedSeasons = 0;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "serie", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @Setter(AccessLevel.NONE)
-    private List<Season> seasons = new ArrayList<>();
+    private List<Season> seasons;
 
     private String title;
 
     public void setSeasons(List<Season> seasons) {
+        seasons.forEach(season -> season.setSerie(this));
         this.seasons = seasons;
         numOfUploadedSeasons = seasons.size();
     }
 
     public void addSeason(Season season) {
+        if (seasons == null)
+            seasons = new ArrayList<>();
+
         numOfUploadedSeasons++;
+        season.setSerie(this);
         seasons.add(season);
     }
 
     public void addReview(String review) {
+        if (reviews == null)
+            reviews = new ArrayList<>();
         reviews.add(review);
     }
+
+
 }
