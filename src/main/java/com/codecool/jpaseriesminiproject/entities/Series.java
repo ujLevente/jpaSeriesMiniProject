@@ -29,6 +29,8 @@ public class Series {
 
     @OneToMany(mappedBy = "serie", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @Setter(AccessLevel.NONE)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<Season> seasons;
 
     private String title;

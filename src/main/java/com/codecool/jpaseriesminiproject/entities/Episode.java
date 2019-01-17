@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Data
 @NoArgsConstructor
@@ -17,6 +18,9 @@ public class Episode {
     @GeneratedValue
     @Setter(AccessLevel.NONE)
     private Long id;
+
+    @ManyToOne
+    private Season season;
 
     private int episodeNumber;
 

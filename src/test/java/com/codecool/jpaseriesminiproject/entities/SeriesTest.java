@@ -1,8 +1,7 @@
-package com.codecool.jpaseriesminiproject.repositories;
+package com.codecool.jpaseriesminiproject.entities;
 
-import com.codecool.jpaseriesminiproject.entities.Genre;
-import com.codecool.jpaseriesminiproject.entities.Season;
-import com.codecool.jpaseriesminiproject.entities.Series;
+import com.codecool.jpaseriesminiproject.repositories.SeasonRepository;
+import com.codecool.jpaseriesminiproject.repositories.SeriesRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @ActiveProfiles("test")
-public class SeriesRepositoryTest {
+public class SeriesTest {
 
     @Autowired
     private SeriesRepository seriesRepository;
@@ -30,11 +29,11 @@ public class SeriesRepositoryTest {
     @Autowired
     private SeasonRepository seasonRepository;
 
-    private Series serie;
+    private Series sampleSerie;
 
     @Before
     public void beforeEachInit() {
-        serie = Series.builder()
+        sampleSerie = Series.builder()
                 .title("Game of Thrones")
                 .genre(Genre.ACTION)
                 .build();
@@ -42,13 +41,13 @@ public class SeriesRepositoryTest {
 
     @Test
     public void testSaveOneSimple() {
-        seriesRepository.save(serie);
+        seriesRepository.save(sampleSerie);
         assertThat(seriesRepository.findAll()).hasSize(1);
     }
 
     @Test
     public void idGivenAutomatically() {
-        seriesRepository.save(serie);
+        seriesRepository.save(sampleSerie);
         seriesRepository.save(new Series());
         seriesRepository.save(new Series());
         assertThat(seriesRepository.findAll()).allMatch(serie -> serie.getId() != null);
@@ -57,8 +56,8 @@ public class SeriesRepositoryTest {
     @Test
     public void addedReviewsSavedWithSerie() {
         List<String> reviewsToAdd = Arrays.asList("review1", "review2", "review3");
-        serie.setReviews(reviewsToAdd);
-        seriesRepository.save(serie);
+        sampleSerie.setReviews(reviewsToAdd);
+        seriesRepository.save(sampleSerie);
 
         List<String> DbSerieReviews = seriesRepository.findAll().get(0).getReviews();
 
@@ -67,7 +66,7 @@ public class SeriesRepositoryTest {
 
     @Test
     public void transientFieldNotPresentInDb() {
-        seriesRepository.save(serie);
+        seriesRepository.save(sampleSerie);
         assertThat(seriesRepository.findAll()).allMatch(serie -> serie.getNumOfUploadedSeasons() == 0L);
     }
 
@@ -75,26 +74,26 @@ public class SeriesRepositoryTest {
     public void numOfUploadedSeasonsIncrementsWithSeasonAdded() {
         int numOfAddedSeasons = 0;
 
-        assertEquals(serie.getNumOfUploadedSeasons(), numOfAddedSeasons);
+        assertEquals(sampleSerie.getNumOfUploadedSeasons(), numOfAddedSeasons);
 
         List<Season> seasonsToAdd = new ArrayList<>(Arrays.asList(new Season(), new Season()));
-        serie.setSeasons(seasonsToAdd);
+        sampleSerie.setSeasons(seasonsToAdd);
         numOfAddedSeasons = seasonsToAdd.size();
 
-        assertEquals(serie.getNumOfUploadedSeasons(), numOfAddedSeasons);
+        assertEquals(sampleSerie.getNumOfUploadedSeasons(), numOfAddedSeasons);
 
-        serie.addSeason(new Season());
+        sampleSerie.addSeason(new Season());
         numOfAddedSeasons++;
 
-        assertEquals(serie.getNumOfUploadedSeasons(), numOfAddedSeasons);
+        assertEquals(sampleSerie.getNumOfUploadedSeasons(), numOfAddedSeasons);
     }
 
     @Test
     public void seasonPersistedAndDeletedWithSeries() {
         List<Season> seasonsToAdd = Arrays.asList(new Season(), new Season());
 
-        serie.setSeasons(seasonsToAdd);
-        seriesRepository.save(serie);
+        sampleSerie.setSeasons(seasonsToAdd);
+        seriesRepository.save(sampleSerie);
 
         assertThat(seasonRepository.findAll()).hasSize(seasonsToAdd.size());
 
@@ -108,15 +107,17 @@ public class SeriesRepositoryTest {
         Season sampleSeason = new Season();
         List<Season> sampleSeasons = Arrays.asList(new Season(), new Season(), new Season());
 
-        serie.addSeason(sampleSeason);
+        sampleSerie.addSeason(sampleSeason);
 
-        assertEquals(serie, sampleSeason.getSerie());
+        assertEquals(sampleSerie, sampleSeason.getSerie());
 
-        serie.setSeasons(sampleSeasons);
+        sampleSerie.setSeasons(sampleSeasons);
 
         assertThat(sampleSeasons).allMatch(season ->
-                season.getSerie() != null && season.getSerie().equals(serie)
+                season.getSerie() != null && season.getSerie().equals(sampleSerie)
         );
     }
+
+
 
 }
