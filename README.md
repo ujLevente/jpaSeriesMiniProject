@@ -1,1 +1,1 @@
-Learning project to practice JPA.
+Learning project for practicing JPA.
